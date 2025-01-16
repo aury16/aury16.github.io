@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+
+<html lang="it">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Quiz Interattivo - Il Mercato dell'Arte</title>
+
+    <style>
+
+        body {
+
+            font-family: Arial, sans-serif;
+
+            line-height: 1.6;
+
+            margin: 20px;
+
+            background-color: #f4f4f4;
+
+            color: #333;
+
+        }
+
+        .quiz-container {
+
+            background: #fff;
+
+            border-radius: 5px;
+
+            padding: 20px;
+
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+        }
+
+        .question {
+
+            margin-bottom: 15px;
+
+        }
+
+        .options {
+
+            list-style-type: none;
+
+            padding: 0;
+
+        }
+
+        .options li {
+
+            margin-bottom: 10px;
+
+        }
+
+        .btn {
+
+            display: inline-block;
+
+            background: #007BFF;
+
+            color: #fff;
+
+            padding: 10px 15px;
+
+            border: none;
+
+            border-radius: 5px;
+
+            text-decoration: none;
+
+            cursor: pointer;
+
+        }
+
+        .btn:hover {
+
+            background: #0056b3;
+
+        }
+
+        .result {
+
+            margin-top: 20px;
+
+            padding: 15px;
+
+            background: #dff0d8;
+
+            color: #3c763d;
+
+            border: 1px solid #d6e9c6;
+
+            border-radius: 5px;
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="quiz-container">
+
+        <h1>Quiz Interattivo: Il Mercato dell'Arte</h1>
+
+        <form id="quiz-form">
+
+            <!-- Domande generate automaticamente qui -->
+
+        </form>
+
+        <button class="btn" onclick="calcolaRisultati()">Mostra Risultati</button>
+
+        <div id="result" class="result" style="display: none;"></div>
+
+    </div>
+
+ 
+
+    <script>
+
+        const domande = [
+
+            {
+
+                domanda: "Come funziona il mercato dell'arte?",
+
+                opzioni: [
+
+                    "Si distingue in primario e secondario",
+
+                    "Esiste solo il mercato secondario",
+
+                    "Gli artisti vendono solo direttamente",
+
+                    "Non ci sono regole definite"
+
+                ],
+
+                corretta: 0
+
+            },
+
+            {
+
+                domanda: "Che differenza c'è tra mercato pubblico e privato?",
+
+                opzioni: [
+
+                    "Pubblico = aste, privato = compravendita privata",
+
+                    "Pubblico = gallerie, privato = aste",
+
+                    "Non ci sono differenze",
+
+                    "Pubblico = compravendita privata, privato = aste"
+
+                ],
+
+                corretta: 0
+
+            },
+
+            {
+
+                domanda: "Cos'è il mercato primario?",
+
+                opzioni: [
+
+                    "Dove le opere vengono vendute per la prima volta",
+
+                    "Un mercato di rivendita",
+
+                    "Una galleria d'arte",
+
+                    "Un'asta privata"
+
+                ],
+
+                corretta: 0
+
+            },
+
+            {
+
+                domanda: "Cos'è il mercato secondario?",
+
+                opzioni: [
+
+                    "Si occupa degli scambi di opere già presenti sul mercato",
+
+                    "Un mercato riservato agli artisti",
+
+                    "Un tipo di mercato illegale",
+
+                    "Il mercato delle opere non vendute"
+
+                ],
+
+                corretta: 0
+
+            },
+
+            {
+
+                domanda: "Quali sono le gallerie d'arte contemporanea più potenti?",
+
+                opzioni: [
+
+                    "Gagosian, David Zwirner, White Cube, Hauser & Wirth",
+
+                    "Solo gallerie locali",
+
+                    "Le gallerie degli artisti",
+
+                    "Non esistono gallerie potenti"
+
+                ],
+
+                corretta: 0
+
+            },
+
+            {
+
+                domanda: "Perché alcune gallerie hanno una lista d'attesa per la vendita di opere?",
+
+                opzioni: [
+
+                    "Perché gli artisti più richiesti hanno opere limitate",
+
+                    "Per mancanza di spazio",
+
+                    "Perché le opere non sono pronte",
+
+                    "Per gestire meglio gli acquirenti"
+
+                ],
+
+                corretta: 0
+
+            },
+
+            {
+
+                domanda: "Quali sono le principali modalità con cui le gallerie valorizzano le opere?",
+
+                opzioni: [
+
+                    "Mostre, cataloghi, fiere, musei, biennali",
+
+                    "Solo mostre locali",
+
+                    "Attraverso donazioni private",
+
+                    "Non è possibile valorizzarle"
+
+                ],
+
+                corretta: 0
+
+            },
+
+            {
+
+                domanda: "Cosa sono le aste online?",
+
+                opzioni: [
+
+                    "Vendite trasmesse in streaming o esclusivamente online",
+
+                    "Vendite in gallerie locali",
+
+                    "Eventi privati per collezionisti",
+
+                    "Eventi di beneficenza"
+
+                ],
+
+                corretta: 0
+
+            },
+
+            {
+
+                domanda: "Cos'è il diritto di seguito?",
+
+                opzioni: [
+
+                    "Il diritto dell'autore a ricevere una percentuale sulle vendite successive alla prima",
+
+                    "Un diritto per gli acquirenti",
+
+                    "Un'imposta sulle opere",
+
+                    "Un diritto esclusivo delle gallerie"
+
+                ],
+
+                corretta: 0
+
+            },
+
+            {
+
+                domanda: "Qual è la durata dei diritti d'autore?",
+
+                opzioni: [
+
+                    "70 anni dalla morte dell'autore",
+
+                    "20 anni dalla creazione dell'opera",
+
+                    "Non hanno durata",
+
+                    "50 anni dalla pubblicazione"
+
+                ],
+
+                corretta: 0
+
+            }
+
+            // Continua ad aggiungere tutte le altre domande presenti nel file PDF.
+
+        ];
+
+ 
+
+        const form = document.getElementById('quiz-form');
+
+ 
+
+        domande.forEach((q, index) => {
+
+            const questionDiv = document.createElement('div');
+
+            questionDiv.classList.add('question');
+
+ 
+
+            const questionTitle = document.createElement('h3');
+
+            questionTitle.textContent = `${index + 1}. ${q.domanda}`;
+
+            questionDiv.appendChild(questionTitle);
+
+ 
+
+            const optionsList = document.createElement('ul');
+
+            optionsList.classList.add('options');
+
+ 
+
+            q.opzioni.forEach((opzione, opIndex) => {
+
+                const listItem = document.createElement('li');
+
+                const label = document.createElement('label');
+
+                const input = document.createElement('input');
+
+                input.type = 'radio';
+
+                input.name = `question-${index}`;
+
+                input.value = opIndex;
+
+                label.appendChild(input);
+
+                label.appendChild(document.createTextNode(opzione));
+
+                listItem.appendChild(label);
+
+                optionsList.appendChild(listItem);
+
+            });
+
+ 
+
+            questionDiv.appendChild(optionsList);
+
+            form.appendChild(questionDiv);
+
+        });
+
+ 
+
+        function calcolaRisultati() {
+
+            let corrette = 0;
+
+ 
+
+            domande.forEach((q, index) => {
+
+                const selected = document.querySelector(`input[name="question-${index}"]:checked`);
+
+                if (selected && parseInt(selected.value) === q.corretta) {
+
+                    corrette++;
+
+                }
+
+            });
+
+ 
+
+            const resultDiv = document.getElementById('result');
+
+            resultDiv.style.display = 'block';
+
+            resultDiv.textContent = `Hai risposto correttamente a ${corrette} domande su ${domande.length}.`;
+
+        }
+
+    </script>
+
+</body>
+
+</html>
