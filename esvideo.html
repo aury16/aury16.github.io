@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+  <head>
+    <style>
+      span{
+         background-color: yellow;
+      }
+     body{
+       color:red;
+     }
+      h1{
+        background-color: acqua; /*solo color no "evidenzia"*/
+        border: solid 1px black;
+        padding: 20px;
+      }
+      h2{
+        color:inherit; /prenderà il rosso di body*/
+        /*con initial:prende quello valore iniziale quindi nero, unset:non so*/
+        /* con all ripristina tutto ma in questo caso tranne il colore rosso*/
+      }
+      </style>
+   <body>
+      <span>ciao</span>/*va se togli body*/
+      <h1>sono un titolo di prova</h1>/*va se togli body*/
+     
+      </body> 
+    </html>
