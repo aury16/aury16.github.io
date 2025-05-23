@@ -1,25 +1,141 @@
 <!DOCTYPE html>
 <html>
 <head>
-     <link rel="icon" type="image/x-icon" href="immagini.png">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/x-icon" href="immagini.png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+body {
+  background-color: white;
+  font-family: Arial, sans-serif;
+}
+
+.navbar {
+  overflow: hidden;
+  background-color: #333;
+}
+
+.navbar a, .dropbtn {
+  float: left;
+  font-size: 16px;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  background-color: inherit;
+  border: none;
+  cursor: pointer;
+}
+
+.navbar a:hover, .dropdown:hover .dropbtn, .dropbtn:focus {
+  background-color: red;
+}
+
+.dropdown {
+  float: left;
+  overflow: hidden;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 220px;
+  box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  float: none;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+.show {
+  display: block;
+}
+
+h1, h2, h3 {
+  text-align: center;
+  color: #00387b;
+  font-family: 'sugarrush', cursive;
+}
+
+.links-section {
+  margin: 20px;
+}
+
+</style>
 </head>
 <body>
-    <h1> <p align="center"> <font color= #00387b size="24" face="sugarrush"> Sito di Aurora Pluderi </p> </font> </h1>
-    <h2> <p align="center"> <font size="24" face="sugarrush"> A scopo didattico </p> </font> </h2>
-    <h3> <b> <u> <font size="14" face="sugarrush"> Esercizi svolti </font> </u> </b></h3>
-    <p><a href="intestazione.html">Intestazioni e paragrafi </a></p>
-    <p><a href="font.html"> Caratteri speciali </a></p>
-    <p><a href="listegusto.html"> Liste a punti </a></p>
-    <p><a href="tabella.html"> Tabella </a></p>
-    <p><a href="esercizio2slide.html">Esercizio n2</a></p>
-    <p><a href="registrazione.html">Registrazione </a></p>
-    <p><a href="eserciziofinale.html">Esercizio conclusivo </a></p>
-    <p><a href="ricetta.html">Ricetta </a></p>
-    <hr>
-    <h1><b>Esecercizi con CSS</b></h1>
-     <p><a href="es1css.html">Es1 di css </a></p>
-     <p><a href="box.html">Box flottanti</a></p>
-     <p><a href="esconboxflottanti.html">Video tutorial su CSS</a></p>
-    
+
+<div class="navbar">
+  <a href="#">Home</a>
+
+  <div class="dropdown">
+    <button class="dropbtn" onclick="toggleDropdown(event, 'dropdown1')">Esercizi HTML
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-content" id="dropdown1">
+      <a href="intestazione.html">Intestazioni e paragrafi</a>
+      <a href="font.html">Caratteri speciali</a>
+      <a href="listegusto.html">Liste a punti</a>
+      <a href="tabella.html">Tabella</a>
+      <a href="esercizio2slide.html">Esercizio n2</a>
+      <a href="registrazione.html">Registrazione</a>
+      <a href="eserciziofinale.html">Esercizio conclusivo</a>
+      <a href="ricetta.html">Ricetta</a>
+    </div>
+  </div> 
+
+  <div class="dropdown">
+    <button class="dropbtn" onclick="toggleDropdown(event, 'dropdown2')">Esercizi CSS
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-content" id="dropdown2">
+      <a href="es1css.html">Es1 di CSS</a>
+      <a href="box.html">Box flottanti</a>
+      <a href="esconboxflottanti.html">Video tutorial su CSS</a>
+    </div>
+  </div> 
+</div>
+
+<h1>Sito di Aurora Pluderi</h1>
+<h2>A scopo didattico</h2>
+<h3><u>Esercizi svolti</u></h3>
+
+<div class="links-section">
+  <!-- I link sono già nel menu a tendina -->
+  <hr>
+</div>
+
+<script>
+function toggleDropdown(event, id) {
+  event.stopPropagation();
+  closeAllDropdowns();
+  document.getElementById(id).classList.toggle("show");
+}
+
+function closeAllDropdowns() {
+  var dropdowns = document.getElementsByClassName("dropdown-content");
+  for (var i = 0; i < dropdowns.length; i++) {
+    dropdowns[i].classList.remove('show');
+  }
+}
+
+window.onclick = function(e) {
+  if (!e.target.matches('.dropbtn')) {
+    closeAllDropdowns();
+  }
+}
+</script>
+
 </body>
 </html>
