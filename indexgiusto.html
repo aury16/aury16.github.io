@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/x-icon" href="immagini.png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+ background: url('https://wallpapers.com/images/featured-full/universo-z8q8d1d7d1ja4b92.jpg') no-repeat center center;
+background-size: cover;
+color: #333;
+}
+
+.navbar {
+  overflow: hidden;
+  background-color: #00387b;
+}
+
+.navbar a, .dropbtn {
+  float: left;
+  font-size: 16px;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  background-color: inherit;
+  border: none;
+  cursor: pointer;
+}
+
+.navbar a:hover, .dropdown:hover .dropbtn, .dropbtn:focus {
+  background-color: #0050aa;
+}
+
+.dropdown {
+  float: left;
+  overflow: hidden;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 220px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  float: none;
+  color: #00387b;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+}
+
+.show {
+  display: block;
+}
+
+/* Contenuto Home */
+.header-section {
+  text-align: center;
+  padding: 50px 20px 30px;
+  background-color: #e8f0fe;
+}
+
+.header-section h1 {
+  color: #00387b;
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+.header-section h2 {
+  color: #555;
+  font-weight: normal;
+}
+
+.card {
+  background-color: white;
+  margin: 30px auto;
+  padding: 30px;
+  border-radius: 12px;
+  max-width: 700px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.card img {
+  max-width: 100%;
+  border-radius: 12px;
+  margin-top: 20px;
+}
+</style>
+</head>
+<body>
+<!-- Header -->
+<div class="header-section">
+  <h1>Sito di Aurora Pluderi</h1>
+  <h2>A scopo didattico</h2>
+</div>
+<!-- Navbar -->
+<div class="navbar">
+  <a href="#">Home</a>
+
+  <div class="dropdown">
+    <button class="dropbtn" onclick="toggleDropdown(event, 'dropdown1')">Esercizi HTML
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-content" id="dropdown1">
+      <a href="intestazione.html">Intestazioni e paragrafi</a>
+      <a href="font.html">Caratteri speciali</a>
+      <a href="listegusto.html">Liste a punti</a>
+      <a href="tabella.html">Tabella</a>
+      <a href="esercizio2slide.html">Esercizio n2</a>
+      <a href="registrazione.html">Registrazione</a>
+      <a href="eserciziofinale.html">Esercizio conclusivo</a>
+      <a href="ricetta.html">Ricetta</a>
+    </div>
+  </div> 
+
+  <div class="dropdown">
+    <button class="dropbtn" onclick="toggleDropdown(event, 'dropdown2')">Esercizi CSS con bootstrap
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-content" id="dropdown2">
+      <a href="esercizio1bootstrapt.html">Es1</a>
+      <a href="esmodale2.html">Esercizio con modale</a>
+    </div>
+  </div> 
+    </button>
+  
+</div>
+<!-- Contenuto Home -->
+<div class="card">
+  <h2>Benvenuto!</h2>
+  <p>Questo sito raccoglie tutti gli esercizi HTML e CSS svolti da me. Usa il menu in alto per navigare tra i vari contenuti</p>
+</div>
+
+<!-- Script per dropdown -->
+<script>
+function toggleDropdown(event, id) {
+  event.stopPropagation();
+  closeAllDropdowns();
+  document.getElementById(id).classList.toggle("show");
+}
+
+function closeAllDropdowns() {
+  var dropdowns = document.getElementsByClassName("dropdown-content");
+  for (var i = 0; i < dropdowns.length; i++) {
+    dropdowns[i].classList.remove('show');
+  }
+}
+
+window.onclick = function(e) {
+  if (!e.target.matches('.dropbtn')) {
+    closeAllDropdowns();
+  }
+}
+</script>
+
+</body>
+</html>
