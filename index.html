@@ -6,13 +6,16 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
 body {
-  background-color: white;
-  font-family: Arial, sans-serif;
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+ background: url('https://wallpapers.com/images/featured-full/universo-z8q8d1d7d1ja4b92.jpg') no-repeat center center;
+background-size: cover;
+color: #333;
 }
 
 .navbar {
   overflow: hidden;
-  background-color: #333;
+  background-color: #00387b;
 }
 
 .navbar a, .dropbtn {
@@ -28,7 +31,7 @@ body {
 }
 
 .navbar a:hover, .dropdown:hover .dropbtn, .dropbtn:focus {
-  background-color: red;
+  background-color: #0050aa;
 }
 
 .dropdown {
@@ -39,15 +42,15 @@ body {
 .dropdown-content {
   display: none;
   position: absolute;
-  background-color: #f9f9f9;
+  background-color: white;
   min-width: 220px;
-  box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
   z-index: 1;
 }
 
 .dropdown-content a {
   float: none;
-  color: black;
+  color: #00387b;
   padding: 12px 16px;
   text-decoration: none;
   display: block;
@@ -55,31 +58,58 @@ body {
 }
 
 .dropdown-content a:hover {
-  background-color: #ddd;
+  background-color: #f1f1f1;
 }
 
 .show {
   display: block;
 }
 
-h1, h2, h3 {
+/* Contenuto Home */
+.header-section {
   text-align: center;
+  padding: 50px 20px 30px;
+  background-color: #e8f0fe;
+}
+
+.header-section h1 {
   color: #00387b;
-  font-family: 'sugarrush', cursive;
+  font-size: 36px;
+  margin-bottom: 10px;
 }
 
-.links-section {
-  margin: 20px;
+.header-section h2 {
+  color: #555;
+  font-weight: normal;
 }
 
+.card {
+  background-color: white;
+  margin: 30px auto;
+  padding: 30px;
+  border-radius: 12px;
+  max-width: 700px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.card img {
+  max-width: 100%;
+  border-radius: 12px;
+  margin-top: 20px;
+}
 </style>
 </head>
 <body>
-<h1>Sito di Aurora Pluderi</h1>
-<h2>A scopo didattico</h2>
-<h3><u>Esercizi svolti</u></h3>
+<!-- Header -->
+<div class="header-section">
+  <h1>Sito di Aurora Pluderi</h1>
+  <h2>A scopo didattico</h2>
+</div>
+<!-- Navbar -->
 <div class="navbar">
   <a href="#">Home</a>
+
   <div class="dropdown">
     <button class="dropbtn" onclick="toggleDropdown(event, 'dropdown1')">Esercizi HTML
       <i class="fa fa-caret-down"></i>
@@ -97,26 +127,24 @@ h1, h2, h3 {
   </div> 
 
   <div class="dropdown">
-    <button class="dropbtn" onclick="toggleDropdown(event, 'dropdown2')">Esercizi CSS
+    <button class="dropbtn" onclick="toggleDropdown(event, 'dropdown2')">Esercizi CSS con bootstrap
       <i class="fa fa-caret-down"></i>
     </button>
     <div class="dropdown-content" id="dropdown2">
-      <a href="es1css.html">Es1 di CSS</a>
-      <a href="box.html">Box flottanti</a>
-      <a href="esconboxflottanti.html">Video tutorial su CSS</a>
+      <a href="esercizio1bootstrapt.html">Es1</a>
+      <a href="esmodale2.html">Esercizio con modale</a>
     </div>
   </div> 
+    </button>
+  
+</div>
+<!-- Contenuto Home -->
+<div class="card">
+  <h2>Benvenuto!</h2>
+  <p>Questo sito raccoglie tutti gli esercizi HTML e CSS svolti da me. Usa il menu in alto per navigare tra i vari contenuti</p>
 </div>
 
-
-<div class="links-section">
-  <!-- I link sono già nel menu a tendina -->
-  <hr>
-</div>
-<div class="home-content" style="text-align: center; margin: 40px;">
-  <h2>Benvenuto nel mio sito!</h2>
-  <p>Questo sito è stato creato da me a scopo didattico. Puoi esplorare gli esercizi HTML e CSS utilizzando il menu in alto.</p>
-</div>
+<!-- Script per dropdown -->
 <script>
 function toggleDropdown(event, id) {
   event.stopPropagation();
