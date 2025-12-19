@@ -2,13 +2,12 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<title>Prenotazioni & Punteggio</title>
-
+<title>Indovina la Canzone</title>
 <style>
 body {
     font-family: Arial, sans-serif;
-    background: #f2f2f2;
     text-align: center;
+    background: #f2f2f2;
     padding: 20px;
 }
 input, button {
@@ -30,105 +29,107 @@ ul {
     border-radius: 8px;
 }
 .score {
-    font-size: 40px;
-    margin: 10px;
+    font-weight: bold;
 }
 </style>
 </head>
-
 <body>
 
-<h1>🏆 Prenotazione Giocatori</h1>
+<h1>🎵 Indovina la Canzone</h1>
 
 <input id="nome" placeholder="Il tuo nome">
-<button onclick="prenota()">Prenotati</button>
+<button id="prenotaBtn" onclick="prenota()">Prenotati</button>
 
-<h2>Giocatori prenotati</h2>
+<h2>Giocatori</h2>
 <ul id="lista"></ul>
+
+<h3 id="risponde"></h3>
 
 <hr>
 
-<h2>🔒 Area Admin</h2>
+<h2>🔒 Admin</h2>
 <input type="password" id="password" placeholder="Password admin">
 <button onclick="loginAdmin()">Accedi</button>
 
 <div id="admin">
-    <h2>Punteggio</h2>
-    <button onclick="cambiaPunteggio(-1)">➖</button>
-    <span class="score" id="punteggio">0</span>
-    <button onclick="cambiaPunteggio(1)">➕</button>
-
-    <br><br>
-    <button onclick="reset()">🔄 Reset</button>
+    <button onclick="giusta()">✔ Risposta Giusta</button>
+    <button onclick="sbagliata()">❌ Risposta Sbagliata</button>
+    <button onclick="nuovoRound()">🔄 Nuova Canzone</button>
 </div>
 
-<!-- FIREBASE -->
+<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 <script>
-// 🔐 PASSWORD ADMIN
+// 🔐 Password admin
 const ADMIN_PASSWORD = "admin123";
 
-// 🔥 CONFIG FIREBASE (DA COMPILARE)
+// Config Firebase (da completare con il tuo progetto)
 const firebaseConfig = {
-    apiKey: "INSERISCI_API_KEY",
-    authDomain: "TUO_PROGETTO.firebaseapp.com",
-    databaseURL: "https://TUO_PROGETTO.firebaseio.com",
-    projectId: "TUO_PROGETTO",
+  apiKey: "INSERISCI_API_KEY",
+  authDomain: "TUO_PROGETTO.firebaseapp.com",
+  databaseURL: "https://TUO_PROGETTO.firebaseio.com",
+  projectId: "TUO_PROGETTO",
 };
-
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// 📌 PRENOTAZIONE
+let prenotato = null;
+
+// 📌 Prenotazione giocatore
 function prenota() {
+    if (prenotato) return alert("Prenotazione chiusa per questo round!");
     const nome = document.getElementById("nome").value.trim();
-    if (!nome) return alert("Inserisci il nome");
-    db.ref("giocatori/" + nome).set(true);
-    document.getElementById("nome").value = "";
+    if (!nome) return alert("Inserisci il tuo nome!");
+    prenotato = nome;
+    document.getElementById("prenotaBtn").disabled = true;
+    document.getElementById("risponde").textContent = "🎤 Risponde: " + nome;
+    // assicura che il giocatore esista in DB con punteggio iniziale 0
+    db.ref("giocatori/" + nome).set({punti: 0});
 }
 
-// 📋 LISTA GIOCATORI LIVE
+// 📋 Lista giocatori live
 db.ref("giocatori").on("value", snap => {
     const lista = document.getElementById("lista");
     lista.innerHTML = "";
     snap.forEach(el => {
         const li = document.createElement("li");
-        li.textContent = el.key;
+        li.innerHTML = el.key + ": <span class='score'>" + el.val().punti + "</span>";
         lista.appendChild(li);
     });
 });
 
-// 🔒 LOGIN ADMIN
+// 🔒 Login Admin
 function loginAdmin() {
     const pass = document.getElementById("password").value;
     if (pass === ADMIN_PASSWORD) {
         document.getElementById("admin").style.display = "block";
+        alert("Accesso admin consentito");
     } else {
-        alert("Password sbagliata");
+        alert("Password sbagliata!");
     }
 }
 
-// 🏆 PUNTEGGIO
-function cambiaPunteggio(val) {
-    db.ref("punteggio").transaction(p => (p || 0) + val);
+// 👑 Admin: Risposta Giusta
+function giusta() {
+    if (!prenotato) return alert("Nessun giocatore prenotato!");
+    const ref = db.ref("giocatori/" + prenotato + "/punti");
+    ref.transaction(p => (p || 0) + 1);
 }
 
-db.ref("punteggio").on("value", snap => {
-    document.getElementById("punteggio").textContent = snap.val() || 0;
-});
+// 👑 Admin: Risposta Sbagliata
+function sbagliata() {
+    if (!prenotato) return alert("Nessun giocatore prenotato!");
+    alert(prenotato + " ha sbagliato!");
+}
 
-// 🔄 RESET
-function reset() {
-    if (confirm("Reset totale?")) {
-        db.ref().set({
-            punteggio: 0,
-            giocatori: {}
-        });
-    }
+// 🔄 Nuovo round
+function nuovoRound() {
+    prenotato = null;
+    document.getElementById("prenotaBtn").disabled = false;
+    document.getElementById("risponde").textContent = "";
 }
 </script>
-
 </body>
 </html>
