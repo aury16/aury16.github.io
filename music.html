@@ -2,9 +2,8 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<title>Indovina la Canzone</title>
+<title>Indovina la Canzone - Stanza Unica</title>
 <style>
-/* STILE GENERALE */
 body {
     font-family: 'Poppins', sans-serif;
     background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
@@ -43,8 +42,6 @@ button:disabled {
     background-color: #aaa;
     cursor: not-allowed;
 }
-
-/* LISTA GIOCATORI */
 #lista {
     list-style: none;
     padding: 0;
@@ -65,8 +62,6 @@ button:disabled {
 #lista li.animate {
     transform: scale(1.05);
 }
-
-/* RISPOSTA */
 #risponde {
     font-size: 1.6em;
     margin-top: 15px;
@@ -74,8 +69,6 @@ button:disabled {
     color: #fff;
     text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
 }
-
-/* AREA ADMIN */
 #admin {
     display: none;
     margin-top: 25px;
@@ -105,6 +98,13 @@ button:disabled {
 </style>
 </head>
 <body>
+<!-- ICONA STANZA -->
+<div style="margin:20px;">
+    <img src="f114ae75-d7f2-4cfd-8157-b7b6630e0726.png" 
+         alt="Stanza" 
+         style="width:80px;height:80px;">
+    <p style="color:white;font-weight:bold;">Stanza Unica</p>
+</div>
 
 <h1>🎵 Indovina la Canzone</h1>
 
@@ -125,10 +125,10 @@ button:disabled {
 <div id="admin">
     <button class="admin-btn giusta" onclick="giusta()">✔ Risposta Giusta</button>
     <button class="admin-btn sbagliata" onclick="sbagliata()">❌ Risposta Sbagliata</button>
-    <button class="admin-btn nuovo" onclick="nuovoRound()">🔄 Nuova Canzone</button>
+    <button class="admin-btn nuovo" onclick="nuovoRound()">🔄 Nuovo Round</button>
 </div>
 
-<!-- FIREBASE -->
+<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
@@ -148,6 +148,9 @@ const db = firebase.database();
 
 let prenotato = null;
 
+// STANZA UNICA
+const stanza = "stanza1"; // tutti i giocatori useranno la stessa stanza
+
 // PRENOTAZIONE
 function prenota() {
     if (prenotato) return alert("Prenotazione chiusa per questo round!");
@@ -156,18 +159,17 @@ function prenota() {
     prenotato = nome;
     document.getElementById("prenotaBtn").disabled = true;
     document.getElementById("risponde").textContent = "🎤 Risponde: " + nome;
-    db.ref("giocatori/" + nome).set({punti: 0});
+    db.ref(`stanze/${stanza}/giocatori/${nome}`).set({punti: 0});
 }
 
 // LISTA GIOCATORI LIVE
-db.ref("giocatori").on("value", snap => {
+db.ref(`stanze/${stanza}/giocatori`).on("value", snap => {
     const lista = document.getElementById("lista");
     lista.innerHTML = "";
     snap.forEach(el => {
         const li = document.createElement("li");
         li.innerHTML = el.key + ": <span class='score'>" + el.val().punti + "</span>";
         lista.appendChild(li);
-        // animazione quando aumenta punteggio
         if(el.val().punti>0){
             li.classList.add("animate");
             setTimeout(()=>li.classList.remove("animate"),500);
@@ -189,7 +191,7 @@ function loginAdmin() {
 // RISPOSTA GIUSTA
 function giusta() {
     if(!prenotato) return alert("Nessun giocatore prenotato!");
-    const ref = db.ref("giocatori/" + prenotato + "/punti");
+    const ref = db.ref(`stanze/${stanza}/giocatori/${prenotato}/punti`);
     ref.transaction(p => (p || 0) + 1);
 }
 
