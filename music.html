@@ -4,33 +4,90 @@
 <meta charset="UTF-8">
 <title>Indovina la Canzone</title>
 <style>
+/* Stile generale */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(to right, #74ebd5, #ACB6E5);
     text-align: center;
-    background: #f2f2f2;
-    padding: 20px;
+    padding: 30px;
+    color: #333;
+}
+h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
 }
 input, button {
-    padding: 10px;
+    padding: 12px 20px;
     margin: 5px;
+    border-radius: 8px;
+    border: none;
+    font-size: 1em;
+}
+input {
+    width: 200px;
 }
 button {
+    background-color: #ff6b6b;
+    color: white;
+    font-weight: bold;
+    transition: 0.3s;
+}
+button:hover {
+    background-color: #ff4757;
     cursor: pointer;
 }
-ul {
+button:disabled {
+    background-color: #aaa;
+    cursor: not-allowed;
+}
+#lista {
     list-style: none;
     padding: 0;
+    max-width: 400px;
+    margin: 20px auto;
+}
+#lista li {
+    background-color: #fff;
+    margin: 5px 0;
+    padding: 10px 15px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+}
+#risponde {
+    font-size: 1.5em;
+    margin-top: 15px;
+    font-weight: bold;
+    color: #2f3542;
 }
 #admin {
     display: none;
     margin-top: 20px;
-    padding: 15px;
-    background: #fff;
-    border-radius: 8px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 15px;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0px 5px 15px rgba(0,0,0,0.3);
 }
-.score {
+.admin-btn {
+    padding: 12px 20px;
+    margin: 5px;
+    border-radius: 10px;
+    border: none;
+    font-size: 1em;
     font-weight: bold;
+    transition: 0.3s;
 }
+.admin-btn.giusta { background-color: #2ed573; color: #fff; }
+.admin-btn.giusta:hover { background-color: #28a745; }
+.admin-btn.sbagliata { background-color: #ff4757; color: #fff; }
+.admin-btn.sbagliata:hover { background-color: #e84118; }
+.admin-btn.nuovo { background-color: #1e90ff; color: #fff; }
+.admin-btn.nuovo:hover { background-color: #3742fa; }
 </style>
 </head>
 <body>
@@ -52,84 +109,3 @@ ul {
 <button onclick="loginAdmin()">Accedi</button>
 
 <div id="admin">
-    <button onclick="giusta()">✔ Risposta Giusta</button>
-    <button onclick="sbagliata()">❌ Risposta Sbagliata</button>
-    <button onclick="nuovoRound()">🔄 Nuova Canzone</button>
-</div>
-
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-
-<script>
-// 🔐 Password admin
-const ADMIN_PASSWORD = "admin123";
-
-// Config Firebase (da completare con il tuo progetto)
-const firebaseConfig = {
-  apiKey: "INSERISCI_API_KEY",
-  authDomain: "TUO_PROGETTO.firebaseapp.com",
-  databaseURL: "https://TUO_PROGETTO.firebaseio.com",
-  projectId: "TUO_PROGETTO",
-};
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
-
-let prenotato = null;
-
-// 📌 Prenotazione giocatore
-function prenota() {
-    if (prenotato) return alert("Prenotazione chiusa per questo round!");
-    const nome = document.getElementById("nome").value.trim();
-    if (!nome) return alert("Inserisci il tuo nome!");
-    prenotato = nome;
-    document.getElementById("prenotaBtn").disabled = true;
-    document.getElementById("risponde").textContent = "🎤 Risponde: " + nome;
-    // assicura che il giocatore esista in DB con punteggio iniziale 0
-    db.ref("giocatori/" + nome).set({punti: 0});
-}
-
-// 📋 Lista giocatori live
-db.ref("giocatori").on("value", snap => {
-    const lista = document.getElementById("lista");
-    lista.innerHTML = "";
-    snap.forEach(el => {
-        const li = document.createElement("li");
-        li.innerHTML = el.key + ": <span class='score'>" + el.val().punti + "</span>";
-        lista.appendChild(li);
-    });
-});
-
-// 🔒 Login Admin
-function loginAdmin() {
-    const pass = document.getElementById("password").value;
-    if (pass === ADMIN_PASSWORD) {
-        document.getElementById("admin").style.display = "block";
-        alert("Accesso admin consentito");
-    } else {
-        alert("Password sbagliata!");
-    }
-}
-
-// 👑 Admin: Risposta Giusta
-function giusta() {
-    if (!prenotato) return alert("Nessun giocatore prenotato!");
-    const ref = db.ref("giocatori/" + prenotato + "/punti");
-    ref.transaction(p => (p || 0) + 1);
-}
-
-// 👑 Admin: Risposta Sbagliata
-function sbagliata() {
-    if (!prenotato) return alert("Nessun giocatore prenotato!");
-    alert(prenotato + " ha sbagliato!");
-}
-
-// 🔄 Nuovo round
-function nuovoRound() {
-    prenotato = null;
-    document.getElementById("prenotaBtn").disabled = false;
-    document.getElementById("risponde").textContent = "";
-}
-</script>
-</body>
-</html>
