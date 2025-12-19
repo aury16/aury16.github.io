@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<title>Prenotazioni & Punteggio</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #f2f2f2;
+    text-align: center;
+    padding: 20px;
+}
+input, button {
+    padding: 10px;
+    margin: 5px;
+}
+button {
+    cursor: pointer;
+}
+ul {
+    list-style: none;
+    padding: 0;
+}
+#admin {
+    display: none;
+    margin-top: 20px;
+    padding: 15px;
+    background: #fff;
+    border-radius: 8px;
+}
+.score {
+    font-size: 40px;
+    margin: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🏆 Prenotazione Giocatori</h1>
+
+<input id="nome" placeholder="Il tuo nome">
+<button onclick="prenota()">Prenotati</button>
+
+<h2>Giocatori prenotati</h2>
+<ul id="lista"></ul>
+
+<hr>
+
+<h2>🔒 Area Admin</h2>
+<input type="password" id="password" placeholder="Password admin">
+<button onclick="loginAdmin()">Accedi</button>
+
+<div id="admin">
+    <h2>Punteggio</h2>
+    <button onclick="cambiaPunteggio(-1)">➖</button>
+    <span class="score" id="punteggio">0</span>
+    <button onclick="cambiaPunteggio(1)">➕</button>
+
+    <br><br>
+    <button onclick="reset()">🔄 Reset</button>
+</div>
+
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+<script>
+// 🔐 PASSWORD ADMIN
+const ADMIN_PASSWORD = "admin123";
+
+// 🔥 CONFIG FIREBASE (DA COMPILARE)
+const firebaseConfig = {
+    apiKey: "INSERISCI_API_KEY",
+    authDomain: "TUO_PROGETTO.firebaseapp.com",
+    databaseURL: "https://TUO_PROGETTO.firebaseio.com",
+    projectId: "TUO_PROGETTO",
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+// 📌 PRENOTAZIONE
+function prenota() {
+    const nome = document.getElementById("nome").value.trim();
+    if (!nome) return alert("Inserisci il nome");
+    db.ref("giocatori/" + nome).set(true);
+    document.getElementById("nome").value = "";
+}
+
+// 📋 LISTA GIOCATORI LIVE
+db.ref("giocatori").on("value", snap => {
+    const lista = document.getElementById("lista");
+    lista.innerHTML = "";
+    snap.forEach(el => {
+        const li = document.createElement("li");
+        li.textContent = el.key;
+        lista.appendChild(li);
+    });
+});
+
+// 🔒 LOGIN ADMIN
+function loginAdmin() {
+    const pass = document.getElementById("password").value;
+    if (pass === ADMIN_PASSWORD) {
+        document.getElementById("admin").style.display = "block";
+    } else {
+        alert("Password sbagliata");
+    }
+}
+
+// 🏆 PUNTEGGIO
+function cambiaPunteggio(val) {
+    db.ref("punteggio").transaction(p => (p || 0) + val);
+}
+
+db.ref("punteggio").on("value", snap => {
+    document.getElementById("punteggio").textContent = snap.val() || 0;
+});
+
+// 🔄 RESET
+function reset() {
+    if (confirm("Reset totale?")) {
+        db.ref().set({
+            punteggio: 0,
+            giocatori: {}
+        });
+    }
+}
+</script>
+
+</body>
+</html>
